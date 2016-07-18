@@ -1,5 +1,6 @@
-#include "EdgeNodeDLL.h"
-#include "PointNodeDLL.h"
+//#include "EdgeNodeDLL.h"
+//#include "PointNodeDLL.h"
+#include "PEdll.h"
 #include <fstream>
 #include <vector>
 #include <string>
@@ -7,8 +8,7 @@
 using namespace std;
 struct Polygon
 {
-    Pt_doubleLinkedList *PDLL;
-    Eg_doubleLinkedList *EDLL;
+    PE_cirLinkedList *PELL;
 };
 struct PolyNode
 {
@@ -60,8 +60,7 @@ int main(int argc, char *argv[])
         wordbuffer>>word;
         while(word.length()>=4/*!wordbuffer.eof(),polygon_cnt<2*/){ //若到達檔案結尾則”wordbuffer>>str”將 傳回0， 跳出while回圈
             PolyNode *p=new PolyNode;
-            Pt_doubleLinkedList *PList = new Pt_doubleLinkedList();
-            Eg_doubleLinkedList *EList = new Eg_doubleLinkedList();
+            PE_cirLinkedList *PEList = new PE_cirLinkedList();
 
             p->command=word;//command
             wordbuffer>>p->id;//id
@@ -69,9 +68,8 @@ int main(int argc, char *argv[])
             //point-edge set
             wordbuffer>>x;
             wordbuffer>>y;
-            PList->appendNodeBack(x,y);
             wordbuffer>>word;
-            while(word[0]!='['/*word.length()!=1*/){
+            while(word[0]!='['){
                 switch (word[0])
                 {
                 case 'a'://arc
@@ -85,25 +83,22 @@ int main(int argc, char *argv[])
                         c=1;
                     }
                     wordbuffer>>r;//RADIUS
-                    EList->appendNodeBack(0,cx,cy,c,r);
+                    PEList->appendNodeBack(x,y,0,cx,cy,c,r);
                     wordbuffer>>x;
                     wordbuffer>>y;
-                    PList->appendNodeBack(x,y);
                     wordbuffer>>word;
                     continue;
                 case 'l'://line
-                    EList->appendNodeBack(1,(long double)0.0,(long double)0.0,0,(long double)0.0);
+                    PEList->appendNodeBack(x,y,1,(long double)0.0,(long double)0.0,0,(long double)0.0);
                     wordbuffer>>x;
                     wordbuffer>>y;
-                    PList->appendNodeBack(x,y);
                     wordbuffer>>word;
                     continue;
                 default:
                     break;
                 }
             }
-            (p->data).PDLL=PList;
-            (p->data).EDLL=EList;
+            (p->data).PELL=PEList;
             //type: 0/1/2....
             len= word.length()-1;
             p->type=word.substr(1,len);
@@ -118,15 +113,14 @@ int main(int argc, char *argv[])
             }
         }
         //check
-
-        for (int i=0;i<polygonset.size();++i){
-            cout<<"\nPolygon No. "<<i+1;
+        /*
+        for (unsigned int i=0;i<polygonset.size();++i){
+            cout<<"Polygon No. "<<i+1;
             cout<<": ["<< polygonset[i]->command<<", "<<polygonset[i]->id<<", "<<polygonset[i]->str<<", "<<polygonset[i]->type <<"]";
-            polygonset[i]->data.PDLL->dispNodesForward();
-            polygonset[i]->data.EDLL->dispNodesForward();
+            polygonset[i]->data.PELL->dispNodesForward();
             cout<<"----------------------------------------------------------------------"<<endl;
         }
-
+        */
     }
 
     file.close();
