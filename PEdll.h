@@ -9,6 +9,7 @@ class PE_cirLinkedList
       ~PE_cirLinkedList();
       void appendNodeBack(long double, long double, bool, long double, long double, bool, long double);
       void dispNodesForward();
+      void dispNodesReverse();
       void destroyList();
   private:
     struct PEnode
@@ -70,6 +71,28 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
       }
       while(temp != firstNode/*temp != firstNode->N || cnt==1*/);
   }
+
+void PE_cirLinkedList::dispNodesReverse()
+  {
+      PEnode *temp = endNode;
+      cout<<fixed<< setprecision(7);
+      cout << "\n\nDetails in reverse order:" << endl;
+      int cnt=0;
+      do{
+         cout <<"("<<cnt+1<< ") Vertex(" <<temp->x << "," <<temp->y << "),\n";
+         if (temp->segment==0){
+             cout<<"    Arc, Center(" << temp->center_x << "," << temp->center_y << "), Dir:" << int(temp->dir) << ", Radius:" << temp->radius << ".\n" ;
+             temp = temp->P;
+         }
+         else{
+             cout<<"    Line.\n";
+             temp = temp->P;
+         }
+         ++cnt;
+      }
+      while(temp != endNode/*temp != endNode->P || cnt==1*/);
+  }
+
 
 void PE_cirLinkedList::destroyList()
 {
