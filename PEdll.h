@@ -2,6 +2,21 @@
 #include <iostream>
 #include <iomanip>
 using namespace std;
+struct PEnode
+{
+    long double x;
+    long double y;
+    bool segment;
+    long double center_x;
+    long double center_y;
+    bool dir;
+    long double radius;
+    PEnode *N,*P,*hz,*vt;
+    PEnode(long double, long double, bool, long double, long double, bool, long double);
+};
+inline PEnode::PEnode(long double xx, long double yy, bool s, long double vx, long double vy, bool c, long double r):
+            x(xx), y(yy), segment(s), center_x(vx), center_y(vy), dir(c), radius(r), N(this), P(this),hz(NULL),vt(NULL){}
+
 class PE_cirLinkedList
 {
   public:
@@ -11,24 +26,9 @@ class PE_cirLinkedList
       void dispNodesForward();
       void dispNodesReverse();
       void destroyList();
-  private:
-    struct PEnode
-    {
-        long double x;
-        long double y;
-        bool segment;
-        long double center_x;
-        long double center_y;
-        bool dir;
-        long double radius;
-        PEnode *N,*P;
-        PEnode(long double, long double, bool, long double, long double, bool, long double);
-    };
-    PEnode *firstNode;
-    PEnode *endNode;
+      PEnode *firstNode;
+      PEnode *endNode;
 };
-inline PE_cirLinkedList::PEnode::PEnode(long double xx, long double yy, bool s, long double vx, long double vy, bool c, long double r):
-            x(xx), y(yy), segment(s), center_x(vx), center_y(vy), dir(c), radius(r), N(this), P(this){}
 inline PE_cirLinkedList::PE_cirLinkedList():firstNode(NULL),endNode(NULL){}
 inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
 

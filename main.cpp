@@ -1,11 +1,10 @@
 //#include "EdgeNodeDLL.h"
 //#include "PointNodeDLL.h"
-#include "PEdll.h"
+#include "PointNodeLL.h"
 #include <fstream>
 #include <vector>
 #include <string>
 #include <sstream>
-using namespace std;
 
 struct PolyNode
 {
@@ -47,6 +46,7 @@ int main(int argc, char *argv[])
         wordbuffer << contentstr;
 
         vector<PolyNode*> polygonset;
+        Pt_LinkedList *XList=new Pt_LinkedList(), *YList=new Pt_LinkedList();
         polygonset.reserve(1000);
         unsigned int sz=polygonset.capacity();
         int polygon_cnt=0,len;
@@ -80,12 +80,16 @@ int main(int argc, char *argv[])
                         c=1;
                     }
                     wordbuffer>>r;//RADIUS
+                    XList->InsertNodeInc(x);
+                    YList->InsertNodeDec(y);
                     PEList->appendNodeBack(x,y,0,cx,cy,c,r);
                     wordbuffer>>x;
                     wordbuffer>>y;
                     wordbuffer>>word;
                     continue;
                 case 'l'://line
+                    XList->InsertNodeInc(x);
+                    YList->InsertNodeDec(y);
                     PEList->appendNodeBack(x,y,1,(long double)0.0,(long double)0.0,0,(long double)0.0);
                     wordbuffer>>x;
                     wordbuffer>>y;
@@ -118,6 +122,10 @@ int main(int argc, char *argv[])
             //polygonset[i]->PELL->dispNodesReverse();
             cout<<"----------------------------------------------------------------------"<<endl;
         }
+        cout << "X axes list: \n";
+        XList->dispNodesForward();
+        cout << "Y axes list: \n";
+        YList->dispNodesForward();
 
     }
 
