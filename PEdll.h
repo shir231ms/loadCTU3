@@ -22,7 +22,7 @@ class PE_cirLinkedList
   public:
       PE_cirLinkedList();
       ~PE_cirLinkedList();
-      void appendNodeBack(long double, long double, bool, long double, long double, bool, long double);
+      PEnode* appendNodeBack(long double, long double, bool, long double, long double, bool, long double);
       void dispNodesForward();
       void dispNodesReverse();
       void destroyList();
@@ -32,7 +32,7 @@ class PE_cirLinkedList
 inline PE_cirLinkedList::PE_cirLinkedList():firstNode(NULL),endNode(NULL){}
 inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
 
-  void PE_cirLinkedList::appendNodeBack(long double xx, long double yy, bool s, long double x, long double y, bool c, long double r)
+  PEnode* PE_cirLinkedList::appendNodeBack(long double xx, long double yy, bool s, long double x, long double y, bool c, long double r)
   {
         PEnode *n = new PEnode(xx,yy,s,x,y,c,r);
         if( endNode == NULL)
@@ -48,7 +48,7 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
             firstNode->P = n;
             endNode = n;
         }
-
+        return endNode;
   }
 
   void PE_cirLinkedList::dispNodesForward()

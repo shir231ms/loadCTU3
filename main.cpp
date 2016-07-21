@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
         unsigned int sz=polygonset.capacity();
         int polygon_cnt=0,len;
         string word,nextline="\n";
+        PEnode* t;
         long double cx,cy,r,x,y;
         bool c;
         getline(wordbuffer,nextline);
@@ -80,17 +81,17 @@ int main(int argc, char *argv[])
                         c=1;
                     }
                     wordbuffer>>r;//RADIUS
-                    XList->InsertNodeInc(x);
-                    YList->InsertNodeDec(y);
-                    PEList->appendNodeBack(x,y,0,cx,cy,c,r);
+                    t=PEList->appendNodeBack(x,y,0,cx,cy,c,r);
+                    XList->InsertNodeInc(x,y,t);
+                    YList->InsertNodeDec(y,x,t);
                     wordbuffer>>x;
                     wordbuffer>>y;
                     wordbuffer>>word;
                     continue;
                 case 'l'://line
-                    XList->InsertNodeInc(x);
-                    YList->InsertNodeDec(y);
-                    PEList->appendNodeBack(x,y,1,(long double)0.0,(long double)0.0,0,(long double)0.0);
+                    t=PEList->appendNodeBack(x,y,1,(long double)0.0,(long double)0.0,0,(long double)0.0);
+                    XList->InsertNodeInc(x,y,t);
+                    YList->InsertNodeDec(y,x,t);
                     wordbuffer>>x;
                     wordbuffer>>y;
                     wordbuffer>>word;
@@ -123,9 +124,9 @@ int main(int argc, char *argv[])
             cout<<"----------------------------------------------------------------------"<<endl;
         }*/
         cout << "X axes list: \n";
-        XList->dispNodesForward();
-        cout << "Y axes list: \n";
-        YList->dispNodesForward();
+        XList->dispVTNodesForward();
+        cout << "\nY axes list: \n";
+        YList->dispHZNodesForward();
 
     }
 
