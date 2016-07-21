@@ -49,6 +49,12 @@ void Pt_LinkedList::InsertNodeInc(long double v)
             else
                 break;
         }
+
+        if (p==NULL){//n==endNode
+            //cout<<"X endNode: "<<n->value<<endl;
+            temp->N=n;
+            endNode=n;
+        }
     }
     else{
         firstNode=n;
@@ -79,6 +85,11 @@ void Pt_LinkedList::InsertNodeDec(long double v)
             }
             else
                 break;
+        }
+        if (p==NULL){//n==endNode
+            //cout<<"Y endNode: "<<n->value<<endl;
+            temp->N=n;
+            endNode=n;
         }
     }
     else{
