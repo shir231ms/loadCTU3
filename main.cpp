@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         int polygon_cnt=0,len;
         string word;
         PEnode* t;
-        long double cx,cy,r,x,y;
+        double cx,cy,r,x,y;
         bool c;
 
         getline(file,word);
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
                     word = getWord(file);
                     continue;
                 case 'l'://line
-                    t=PEList->appendNodeBack(x,y,1,(long double)0.0,(long double)0.0,0,(long double)0.0);
+                    t=PEList->appendNodeBack(x,y,1,(double)0.0,(double)0.0,0,(double)0.0);
                     XList->InsertNodeInc(x,y,t);
                     YList->InsertNodeDec(y,x,t);
                     x=atof(&(getWord(file))[0u]);
