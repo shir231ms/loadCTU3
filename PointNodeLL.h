@@ -164,13 +164,13 @@ void Pt_LinkedList::dispVTNodesForward()
   int cnt=1;
   while(temp != NULL)
   {
-     cout <<"("<<cnt<< ") value: " <<temp->value <<"\n";
+     cout <<"[Node"<<cnt<< "] value: " <<temp->value <<"\n";
      PEnode* w=temp->vertexHEAD;
-     cout<<"    ";
+     cout<<"       ";
      int cnt2=1;
      while(w!=NULL){
         if (cnt2%3==0&&w->vt!=NULL)
-            cout<<"->("<<w->x<<","<<w->y<<") \n    ";
+            cout<<"->("<<w->x<<","<<w->y<<") \n       ";
         else
             cout<<"->("<<w->x<<","<<w->y<<") ";
         w=w->vt;
@@ -189,13 +189,13 @@ void Pt_LinkedList::dispHZNodesForward()
   int cnt=1;
   while(temp != NULL)
   {
-     cout <<"("<<cnt<< ") value: " <<temp->value <<"\n";
+     cout <<"[Node"<<cnt<< "] value: " <<temp->value <<"\n";
      PEnode* w=temp->vertexHEAD;
-     cout<<"    ";
+     cout<<"       ";
      int cnt2=1;
      while(w!=NULL){
         if(cnt2%3==0&&w->hz!=NULL)
-            cout<<"->("<<w->x<<","<<w->y<<") \n    ";
+            cout<<"->("<<w->x<<","<<w->y<<") \n       ";
         else
             cout<<"->("<<w->x<<","<<w->y<<") ";
         w=w->hz;
