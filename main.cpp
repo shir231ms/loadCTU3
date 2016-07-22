@@ -4,7 +4,6 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <sstream>
 #include <stdlib.h>
 
 struct PolyNode
@@ -45,8 +44,8 @@ string getWord(ifstream& in)
 
 int main(int argc, char *argv[])
 {
-    ifstream file(argv[1]);//¶}±ÒinputÀÉ®×
-    if(!file){     //ÀË¬dÀÉ®×¬O§_¦¨¥\¶}±Ò
+    ifstream file(argv[1]);//é–‹å•Ÿinputæª”æ¡ˆ
+    if(!file){     //æª¢æŸ¥æª”æ¡ˆæ˜¯å¦æˆåŠŸé–‹å•Ÿ
         cout << "Can't open file!\n";
     }
     else{
