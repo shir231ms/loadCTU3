@@ -2,12 +2,12 @@
 #include "PEdll.h"
 struct PtNode
 {
-  long double value;
+  double value;
   PEnode *vertexHEAD;
   PtNode *N;
-  PtNode(long double);
+  PtNode(double);
 };
-inline PtNode::PtNode(long double v): value(v),N(NULL),vertexHEAD(NULL){}
+inline PtNode::PtNode(double v): value(v),N(NULL),vertexHEAD(NULL){}
 
 class Pt_LinkedList
 {
@@ -15,8 +15,8 @@ class Pt_LinkedList
       Pt_LinkedList();
       ~Pt_LinkedList();
       //void appendNodeBack(long double);
-      void InsertNodeInc(long double,long double,PEnode *);
-      void InsertNodeDec(long double,long double,PEnode *);
+      void InsertNodeInc(double,double,PEnode *);
+      void InsertNodeDec(double,double,PEnode *);
       void dispVTNodesForward();
       void dispHZNodesForward();
       void destroyList();
@@ -27,7 +27,7 @@ class Pt_LinkedList
 inline Pt_LinkedList::Pt_LinkedList(): firstNode(NULL),endNode(NULL){}
 inline Pt_LinkedList::~Pt_LinkedList(){ destroyList();}
 
-void Pt_LinkedList::InsertNodeInc(long double v,long double v2,PEnode *q)
+void Pt_LinkedList::InsertNodeInc(double v,double v2,PEnode *q)
 {
     PtNode *n = new PtNode(v);
     if (firstNode!=NULL){
@@ -93,7 +93,7 @@ void Pt_LinkedList::InsertNodeInc(long double v,long double v2,PEnode *q)
 
 }
 
-void Pt_LinkedList::InsertNodeDec(long double v,long double v2,PEnode *q)
+void Pt_LinkedList::InsertNodeDec(double v,double v2,PEnode *q)
 {
     PtNode *n = new PtNode(v);
     if (firstNode!=NULL){
@@ -164,13 +164,13 @@ void Pt_LinkedList::dispVTNodesForward()
   int cnt=1;
   while(temp != NULL)
   {
-     cout <<"("<<cnt<< ") value: " <<temp->value <<"\n";
+     cout <<"[Node"<<cnt<< "] value: " <<temp->value <<"\n";
      PEnode* w=temp->vertexHEAD;
-     cout<<"    ";
+     cout<<"       ";
      int cnt2=1;
      while(w!=NULL){
         if (cnt2%3==0&&w->vt!=NULL)
-            cout<<"->("<<w->x<<","<<w->y<<") \n    ";
+            cout<<"->("<<w->x<<","<<w->y<<") \n       ";
         else
             cout<<"->("<<w->x<<","<<w->y<<") ";
         w=w->vt;
@@ -189,13 +189,13 @@ void Pt_LinkedList::dispHZNodesForward()
   int cnt=1;
   while(temp != NULL)
   {
-     cout <<"("<<cnt<< ") value: " <<temp->value <<"\n";
+     cout <<"[Node"<<cnt<< "] value: " <<temp->value <<"\n";
      PEnode* w=temp->vertexHEAD;
-     cout<<"    ";
+     cout<<"       ";
      int cnt2=1;
      while(w!=NULL){
         if(cnt2%3==0&&w->hz!=NULL)
-            cout<<"->("<<w->x<<","<<w->y<<") \n    ";
+            cout<<"->("<<w->x<<","<<w->y<<") \n       ";
         else
             cout<<"->("<<w->x<<","<<w->y<<") ";
         w=w->hz;

@@ -4,17 +4,17 @@
 using namespace std;
 struct PEnode
 {
-    long double x;
-    long double y;
+    double x;
+    double y;
     bool segment;
-    long double center_x;
-    long double center_y;
+    double center_x;
+    double center_y;
     bool dir;
     long double radius;
     PEnode *N,*P,*hz,*vt;
-    PEnode(long double, long double, bool, long double, long double, bool, long double);
+    PEnode(double, double, bool, double, double, bool, double);
 };
-inline PEnode::PEnode(long double xx, long double yy, bool s, long double vx, long double vy, bool c, long double r):
+inline PEnode::PEnode(double xx, double yy, bool s, double vx, double vy, bool c, double r):
             x(xx), y(yy), segment(s), center_x(vx), center_y(vy), dir(c), radius(r), N(this), P(this),hz(NULL),vt(NULL){}
 
 class PE_cirLinkedList
@@ -22,7 +22,7 @@ class PE_cirLinkedList
   public:
       PE_cirLinkedList();
       ~PE_cirLinkedList();
-      PEnode* appendNodeBack(long double, long double, bool, long double, long double, bool, long double);
+      PEnode* appendNodeBack(double, double, bool, double, double, bool, double);
       void dispNodesForward();
       void dispNodesReverse();
       void destroyList();
@@ -32,7 +32,7 @@ class PE_cirLinkedList
 inline PE_cirLinkedList::PE_cirLinkedList():firstNode(NULL),endNode(NULL){}
 inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
 
-  PEnode* PE_cirLinkedList::appendNodeBack(long double xx, long double yy, bool s, long double x, long double y, bool c, long double r)
+  PEnode* PE_cirLinkedList::appendNodeBack(double xx, double yy, bool s, double x, double y, bool c, double r)
   {
         PEnode *n = new PEnode(xx,yy,s,x,y,c,r);
         if( endNode == NULL)
