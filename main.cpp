@@ -5,7 +5,8 @@
 #include <string>
 #include <stdlib.h>
 #include <pthread.h>
-#define Thread_NUM 3
+#define Thread_NUM 4
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 struct PolyNode
 {
     string command;//"Draw/Flash"
@@ -18,7 +19,6 @@ struct PolyNode
 Pt_LinkedList *XList=new Pt_LinkedList(), *YList=new Pt_LinkedList();
 vector<PolyNode*> polygonset;
 string linebuf[Thread_NUM];
-int polygon_cnt=0;
 
 string getWord(string input,int& index)
 {
@@ -113,10 +113,10 @@ void* work(void* arg)
     len= word.length()-1;
     p->type=word.substr(1,len);
 
+    pthread_mutex_lock(&mutex);
     polygonset.push_back(p);
-    polygon_cnt++;
+    pthread_mutex_unlock(&mutex);
 
-    //cout<<sz<<" ";
     pthread_exit(NULL);
     return 0;
 }
@@ -129,7 +129,9 @@ int main(int argc, char *argv[])
     }
     else{
         string str;
-        polygonset.reserve(10000);
+        int polygon_cnt=0;
+        polygonset.reserve(1000);
+        unsigned int sz=polygonset.capacity();
         getline(file,str);//ignore first line
         //getline(file,line);
         //word=getWord(line,line_index);
@@ -140,19 +142,19 @@ int main(int argc, char *argv[])
         while(getline(file,linebuf[n])){
             pthread_create(&id[n],NULL,work,&linebuf[n]);
             b=0;
-
             ++n;
+            ++polygon_cnt;
+            //cout<<polygon_cnt<<" ";
+            if(polygon_cnt%1000==0){
+                cout<<polygonset.capacity()<<" ";
+                polygonset.reserve(sz+(unsigned int)1000);
+                sz=polygonset.capacity();
+            }
             if (n%Thread_NUM==0){
-
                 n=0;
                 for(int i=0;i<Thread_NUM;i++)
                     pthread_join(id[i],NULL);
                 b=1;
-                if(polygon_cnt%10000==0){
-                    polygonset.reserve(polygonset.capacity()+10000);
-
-                    cout<<polygonset.capacity()<<" ";
-                }
             }
         }
         if(b==0){
