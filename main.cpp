@@ -1,11 +1,11 @@
 //#include "EdgeNodeDLL.h"
 //#include "PointNodeDLL.h"
 #include "PointNodeLL.h"
-#include <fstream>
 #include <vector>
 #include <string>
 #include <stdlib.h>
-
+#include <pthread.h>
+#define Thread_NUM 3
 struct PolyNode
 {
     string command;//"Draw/Flash"
@@ -15,14 +15,18 @@ struct PolyNode
     PE_cirLinkedList *PELL;
 };
 
-string getWord(ifstream& in)
+Pt_LinkedList *XList=new Pt_LinkedList(), *YList=new Pt_LinkedList();
+vector<PolyNode*> polygonset;
+string linebuf[Thread_NUM];
+int polygon_cnt=0;
+
+string getWord(string input,int& index)
 {
-    int c;
     string word;
-    while( !in.eof() )
+    while( 1 )
     {
-        c = in.get();
-        switch( c ){
+        //c = in.get();
+        switch( input[index] ){
         case ' ':
         case ',':
         case '\n':
@@ -32,14 +36,89 @@ string getWord(ifstream& in)
         case ')':
         //case '[':
         case ']':
-            if (!word.empty())
+            if (!word.empty()){
+                ++index;
                 return word;
-            else
+            }
+            else{
+                ++index;
                 break;
+            }
         default:
-            word += c;
+            word += input[index];
+            ++index;
         }
     }
+}
+
+void* work(void* arg)
+{
+    string line=*(string *)arg;
+    int len,line_index=0;
+    string word;
+    PEnode* t;
+    double cx,cy,r,x,y;
+    bool c;
+    word=getWord(line,line_index);
+    //cout<<word<<endl;
+    PolyNode *p=new PolyNode;
+    PE_cirLinkedList *PEList = new PE_cirLinkedList();
+
+    p->command = word;//command
+    p->id = atoi(&(getWord(line,line_index))[0u]);//id
+    //cout<<p->id<<endl;
+    p->str = getWord(line,line_index);//"dark/clear"
+
+    //point-edge set
+    x=atof(&(getWord(line,line_index))[0u]);
+    y=atof(&(getWord(line,line_index))[0u]);
+    word = getWord(line,line_index);
+    do{
+        switch (word[0])
+        {
+        case 'a'://arc
+            cx=atof(&(getWord(line,line_index))[0u]);
+            cy=atof(&(getWord(line,line_index))[0u]);
+            word=getWord(line,line_index);
+            if (word.length()==2){//'CW'
+                c=0;
+            }
+            else{//'CCW'
+                c=1;
+            }
+            r=atof(&(getWord(line,line_index))[0u]);
+            t=PEList->appendNodeBack(x,y,0,cx,cy,c,r);
+            XList->InsertNodeInc(x,y,t);
+            YList->InsertNodeDec(y,x,t);
+            x=atof(&(getWord(line,line_index))[0u]);
+            y=atof(&(getWord(line,line_index))[0u]);
+            word = getWord(line,line_index);
+            continue;
+        case 'l'://line
+            t=PEList->appendNodeBack(x,y,1,(double)0.0,(double)0.0,0,(double)0.0);
+            XList->InsertNodeInc(x,y,t);
+            YList->InsertNodeDec(y,x,t);
+            x=atof(&(getWord(line,line_index))[0u]);
+            y=atof(&(getWord(line,line_index))[0u]);
+            word = getWord(line,line_index);
+            continue;
+        default:
+            break;
+        }
+    }
+    while(word[0]!='[');
+
+    p->PELL=PEList;
+    //type: 0/1/2....
+    len= word.length()-1;
+    p->type=word.substr(1,len);
+
+    polygonset.push_back(p);
+    polygon_cnt++;
+
+    //cout<<sz<<" ";
+    pthread_exit(NULL);
+    return 0;
 }
 
 int main(int argc, char *argv[])
@@ -49,84 +128,42 @@ int main(int argc, char *argv[])
         cout << "Can't open file!\n";
     }
     else{
-        vector<PolyNode*> polygonset;
-        Pt_LinkedList *XList=new Pt_LinkedList(), *YList=new Pt_LinkedList();
-        polygonset.reserve(1000);
-        unsigned int sz=polygonset.capacity();
-        int polygon_cnt=0,len;
-        string word;
-        PEnode* t;
-        double cx,cy,r,x,y;
-        bool c;
+        string str;
+        polygonset.reserve(10000);
+        getline(file,str);//ignore first line
+        //getline(file,line);
+        //word=getWord(line,line_index);
+        int n=0;
+        //void *ret;
+        bool b=0;
+        pthread_t id[Thread_NUM];
+        while(getline(file,linebuf[n])){
+            pthread_create(&id[n],NULL,work,&linebuf[n]);
+            b=0;
 
-        getline(file,word);
-        word=getWord(file);
-        while(word.length()>=4){
-            PolyNode *p=new PolyNode;
-            PE_cirLinkedList *PEList = new PE_cirLinkedList();
+            ++n;
+            if (n%Thread_NUM==0){
 
-            p->command = word;//command
-            p->id = atoi(&(getWord(file))[0u]);//id
-            p->str = getWord(file);//"dark/clear"
-            //point-edge set
-            x=atof(&(getWord(file))[0u]);
-            y=atof(&(getWord(file))[0u]);
-            word = getWord(file);
-            do{
-                switch (word[0])
-                {
-                case 'a'://arc
-                    cx=atof(&(getWord(file))[0u]);
-                    cy=atof(&(getWord(file))[0u]);
-                    word=getWord(file);
-                    if (word.length()==2){//'CW'
-                        c=0;
-                    }
-                    else{//'CCW'
-                        c=1;
-                    }
-                    r=atof(&(getWord(file))[0u]);
-                    t=PEList->appendNodeBack(x,y,0,cx,cy,c,r);
-                    XList->InsertNodeInc(x,y,t);
-                    YList->InsertNodeDec(y,x,t);
-                    x=atof(&(getWord(file))[0u]);
-                    y=atof(&(getWord(file))[0u]);
-                    word = getWord(file);
-                    continue;
-                case 'l'://line
-                    t=PEList->appendNodeBack(x,y,1,(double)0.0,(double)0.0,0,(double)0.0);
-                    XList->InsertNodeInc(x,y,t);
-                    YList->InsertNodeDec(y,x,t);
-                    x=atof(&(getWord(file))[0u]);
-                    y=atof(&(getWord(file))[0u]);
-                    word = getWord(file);
-                    continue;
-                default:
-                    break;
+                n=0;
+                for(int i=0;i<Thread_NUM;i++)
+                    pthread_join(id[i],NULL);
+                b=1;
+                if(polygon_cnt%10000==0){
+                    polygonset.reserve(polygonset.capacity()+10000);
+
+                    cout<<polygonset.capacity()<<" ";
                 }
             }
-            while(word[0]!='[');
-
-            p->PELL=PEList;
-            //type: 0/1/2....
-            len= word.length()-1;
-            p->type=word.substr(1,len);
-
-            word=getWord(file);
-
-            polygonset.push_back(p);
-            ++polygon_cnt;
-            if(polygon_cnt%1000==0){
-                polygonset.reserve(sz+(unsigned int)1000);
-                sz=polygonset.capacity();
-            }
-
+        }
+        if(b==0){
+            for(int i=0;i<n;i++)
+                pthread_join(id[i],NULL);
         }
         //check
-/*
-        for (unsigned int i=0;i<polygonset.size();++i){
+        cout<<polygonset.size();
+        /*for (unsigned int i=0;i<polygonset.size();++i){
             cout<<"Polygon No. "<<i+1;
-            cout<<": ["<< polygonset[i]->command<<", "<<polygonset[i]->id<<", "<<polygonset[i]->str<<", "<<polygonset[i]->type <<"]";
+            /*cout<<": ["<< polygonset[i]->command<<", "<<polygonset[i]->id<<", "<<polygonset[i]->str<<", "<<polygonset[i]->type <<"]"<<endl;
             polygonset[i]->PELL->dispNodesForward();
             //polygonset[i]->PELL->dispNodesReverse();
             cout<<"----------------------------------------------------------------------"<<endl;

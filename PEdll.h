@@ -1,7 +1,9 @@
 //An example of a simple double linked list using OOP techniques
 #include <iostream>
 #include <iomanip>
+#include <fstream>
 using namespace std;
+//ofstream output("data.txt");
 struct PEnode
 {
     double x;
@@ -55,18 +57,21 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
   {
       PEnode *temp = firstNode;
       cout<<fixed<< setprecision(7);
-      cout << "\n\nDetails in forward order:" << endl;
+      //output<<fixed<< setprecision(7);
+      //cout << "\n\nDetails in forward order:" << endl;
       int cnt=0;
       do{
          cout <<"("<<cnt+1<< ") Vertex(" <<temp->x << "," <<temp->y << "),\n";
          if (temp->segment==0){
              cout<<"    Arc, Center(" << temp->center_x << "," << temp->center_y << "), Dir:" << int(temp->dir) << ", Radius:" << temp->radius << ".\n" ;
-             temp = temp->N;
+
          }
          else{
              cout<<"    Line.\n";
-             temp = temp->N;
-         }
+
+         }/*
+         output<<temp->x<<" "<<temp->N->x<<" "<<temp->y<<" "<<temp->N->y<<endl;*/
+         temp = temp->N;
          ++cnt;
       }
       while(temp != firstNode/*temp != firstNode->N || cnt==1*/);
@@ -76,23 +81,26 @@ void PE_cirLinkedList::dispNodesReverse()
   {
       PEnode *temp = endNode;
       cout<<fixed<< setprecision(7);
-      cout << "\n\nDetails in reverse order:" << endl;
+      //output<<fixed<< setprecision(7);
+      //cout << "\n\nDetails in reverse order:" << endl;
       int cnt=0;
       do{
+
          cout <<"("<<cnt+1<< ") Vertex(" <<temp->x << "," <<temp->y << "),\n";
          if (temp->segment==0){
              cout<<"    Arc, Center(" << temp->center_x << "," << temp->center_y << "), Dir:" << int(temp->dir) << ", Radius:" << temp->radius << ".\n" ;
-             temp = temp->P;
+
          }
          else{
              cout<<"    Line.\n";
-             temp = temp->P;
-         }
+
+         }/*
+         output<<temp->x<<" "<<temp->y<<endl;*/
+         temp = temp->P;
          ++cnt;
       }
       while(temp != endNode/*temp != endNode->P || cnt==1*/);
   }
-
 
 void PE_cirLinkedList::destroyList()
 {
