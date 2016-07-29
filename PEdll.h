@@ -61,6 +61,8 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
       output<<fixed<< setprecision(7);
       //cout << "\n\nDetails in forward order:" << endl;
       int cnt=0;
+      double v1,v2,tem,a,inteval=3.14/60;
+      cout<<"next poly"<<endl;
       do{/*//cout
          cout <<"("<<cnt+1<< ") Vertex(" <<temp->x << "," <<temp->y << "),\n";
          if (temp->segment==0){
@@ -78,26 +80,26 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
          }
          else{
             //output<<"............."<<endl;
-            double v1,v2;
-            if((temp->x-temp->center_x)/temp->radius > 1)
+            if((temp->y-temp->center_y)/temp->radius > 1)
                 v1=1;
-            else if((temp->x-temp->center_x)/temp->radius < -1)
+            else if((temp->y-temp->center_y)/temp->radius < -1)
                 v1=-1;
-            else v1=(temp->x-temp->center_x)/temp->radius;
-            if((temp->N->x-temp->center_x)/temp->radius > 1)
+            else v1=(temp->y-temp->center_y)/temp->radius;
+            if((temp->N->y-temp->center_y)/temp->radius > 1)
                 v2=1;
-            else if((temp->N->x-temp->center_x)/temp->radius < -1)
+            else if((temp->N->y-temp->center_y)/temp->radius < -1)
                 v2=-1;
-            else v2=(temp->N->x-temp->center_x)/temp->radius;
-            double a=acos(v1),inteval=3.14/60;//gain arc value
-            //cout<<acos(v2)<<endl;
-        cout<<"..."<<endl;
+            else v2=(temp->N->y-temp->center_y)/temp->radius;
+            if(cnt!=0) a=tem;//gain arc value
+            else a=asin(v1);
 
+            cout<<"..."<<endl;
+            cout<<"start: "<<a<<endl;
             if (temp->dir==0){//CW
                 a=a-inteval;//3' a line
                 double x1=temp->x,x2;
                 double y1=temp->y,y2;
-                for(int i=0;i<abs(acos(v2)-acos(v1))/inteval;++i){cout<<a<<endl;
+                for(int i=0;i<abs(asin(v2)-asin(v1))/inteval;++i){cout<<a<<endl;
                     x2=temp->center_x+temp->radius*(cos(a));
                     y2=temp->center_y+temp->radius*(sin(a));
                     //cout<<a<<endl;
@@ -105,6 +107,7 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
                     x1=x2; y1=y2;
                     a=a-inteval;//3' a line
                 }
+                tem=a-inteval;
                 x2=temp->N->x;
                 y2=temp->N->y;
                 output<<x1<<" "<<x2<<" "<<y1<<" "<<y2<<endl;
@@ -121,6 +124,7 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
                     x1=x2; y1=y2;
                     a=a+inteval;//3' a line
                 }
+                tem=a-inteval;
                 x2=temp->N->x;
                 y2=temp->N->y;
                 output<<x1<<" "<<x2<<" "<<y1<<" "<<y2<<endl;
