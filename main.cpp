@@ -123,14 +123,14 @@ int main(int argc, char *argv[])
 
         }
         //check
-/*
+
         for (unsigned int i=0;i<polygonset.size();++i){
-            cout<<"Polygon No. "<<i+1;
-            cout<<": ["<< polygonset[i]->command<<", "<<polygonset[i]->id<<", "<<polygonset[i]->str<<", "<<polygonset[i]->type <<"]";
+            //cout<<"Polygon No. "<<i+1;
+            //cout<<": ["<< polygonset[i]->command<<", "<<polygonset[i]->id<<", "<<polygonset[i]->str<<", "<<polygonset[i]->type <<"]";
             polygonset[i]->PELL->dispNodesForward();
             //polygonset[i]->PELL->dispNodesReverse();
-            cout<<"----------------------------------------------------------------------"<<endl;
-        }
+            //cout<<"----------------------------------------------------------------------"<<endl;
+        }/*
         cout << "X axes list: \n";
         XList->dispVTNodesForward();
         cout << "\nY axes list: \n";
