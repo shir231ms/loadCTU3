@@ -107,7 +107,7 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
                     x1=x2; y1=y2;
                     a=a-inteval;//3' a line
                 }
-                tem=a-inteval;
+                tem=a;
                 x2=temp->N->x;
                 y2=temp->N->y;
                 output<<x1<<" "<<x2<<" "<<y1<<" "<<y2<<endl;
@@ -116,7 +116,7 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
                 double x1=temp->x,x2;
                 double y1=temp->y,y2;
                 a=a+inteval;//3' a line
-                for(int i=0;i<abs(acos(v2)-acos(v1))/inteval;++i){
+                for(int i=0;i<abs(asin(v2)-asin(v1))/inteval;++i){
                     x2=temp->center_x+temp->radius*(cos(a));
                     y2=temp->center_y+temp->radius*(sin(a));
                     //cout<<a<<endl;
@@ -124,7 +124,7 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
                     x1=x2; y1=y2;
                     a=a+inteval;//3' a line
                 }
-                tem=a-inteval;
+                tem=a;
                 x2=temp->N->x;
                 y2=temp->N->y;
                 output<<x1<<" "<<x2<<" "<<y1<<" "<<y2<<endl;
