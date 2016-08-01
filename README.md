@@ -1,6 +1,9 @@
 # loadCTU3
 ItriInturn_FirstTask
 
+add "loadCTU3.m" for reading the output file, "data.txt", of "main.cpp", 
+and then draw those polygons out (only lines, no arcs).
+
 use getWord function for gaining word from ".ctu3" file.
 change the type of the floating numbers from "long double" to "double" type. 
 
