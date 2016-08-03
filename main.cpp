@@ -1,7 +1,7 @@
 //#include "EdgeNodeDLL.h"
 //#include "PointNodeDLL.h"
 #include "PointNodeLL.h"
-#include <fstream>
+//#include <fstream>
 #include <vector>
 #include <string>
 #include <stdlib.h>
@@ -135,7 +135,6 @@ int main(int argc, char *argv[])
         XList->dispVTNodesForward();
         cout << "\nY axes list: \n";
         YList->dispHZNodesForward();*/
-
     }
 
     file.close();

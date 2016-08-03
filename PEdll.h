@@ -57,12 +57,12 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
   void PE_cirLinkedList::dispNodesForward()
   {
       PEnode *temp = firstNode;
-      cout<<fixed<< setprecision(7);
+      //cout<<fixed<< setprecision(7);
       output<<fixed<< setprecision(7);
       //cout << "\n\nDetails in forward order:" << endl;
       int cnt=0;
-      double v1,v2,tem,a,inteval=3.14/60;
-      cout<<"next poly"<<endl;
+      double v1,v2,inteval=3.14159265359/36;
+      //cout<<"next poly"<<endl;
       do{/*//cout
          cout <<"("<<cnt+1<< ") Vertex(" <<temp->x << "," <<temp->y << "),\n";
          if (temp->segment==0){
@@ -73,12 +73,14 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
              cout<<"    Line.\n";
 
          }*/
+         //output<<"start("<<temp->x<<","<<temp->y<<")"<<endl;
          //draw
          if (temp->segment==1){
             //output<<"//////////////"<<endl;
             output<<temp->x<<" "<<temp->N->x<<" "<<temp->y<<" "<<temp->N->y<<endl;
          }
          else{
+            double tem,a;
             //output<<"............."<<endl;
             if((temp->y-temp->center_y)/temp->radius > 1)
                 v1=1;
@@ -93,13 +95,14 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
             if(cnt!=0) a=tem;//gain arc value
             else a=asin(v1);
 
-            cout<<"..."<<endl;
-            cout<<"start: "<<a<<endl;
+            //cout<<"...";
+            //cout<<"["<<asin(v2)<<","<<asin(v1)<<"]"<<endl;
+            //cout<<abs(asin(v2)-asin(v1))/inteval<<endl;
             if (temp->dir==0){//CW
                 a=a-inteval;//3' a line
                 double x1=temp->x,x2;
                 double y1=temp->y,y2;
-                for(int i=0;i<abs(asin(v2)-asin(v1))/inteval;++i){cout<<a<<endl;
+                for(int i=1;i<abs(asin(v2)-asin(v1))/inteval;++i){//cout<<a<<endl;
                     x2=temp->center_x+temp->radius*(cos(a));
                     y2=temp->center_y+temp->radius*(sin(a));
                     //cout<<a<<endl;
@@ -116,7 +119,7 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
                 double x1=temp->x,x2;
                 double y1=temp->y,y2;
                 a=a+inteval;//3' a line
-                for(int i=0;i<abs(asin(v2)-asin(v1))/inteval;++i){
+                for(int i=1;i<abs(asin(v2)-asin(v1))/inteval;++i){
                     x2=temp->center_x+temp->radius*(cos(a));
                     y2=temp->center_y+temp->radius*(sin(a));
                     //cout<<a<<endl;
@@ -145,15 +148,12 @@ void PE_cirLinkedList::dispNodesReverse()
       //cout << "\n\nDetails in reverse order:" << endl;
       int cnt=0;
       do{
-
          cout <<"("<<cnt+1<< ") Vertex(" <<temp->x << "," <<temp->y << "),\n";
          if (temp->segment==0){
              cout<<"    Arc, Center(" << temp->center_x << "," << temp->center_y << "), Dir:" << int(temp->dir) << ", Radius:" << temp->radius << ".\n" ;
-
          }
          else{
              cout<<"    Line.\n";
-
          }/*
          output<<temp->x<<" "<<temp->y<<endl;*/
          temp = temp->P;
