@@ -16,7 +16,8 @@ ItriInturn_FirstTask
 
 **loadCTU3.m**
 >add "loadCTU3.m" for reading the output file, "data.txt", of "main.cpp", 
->>and then draw those polygons out (arcs are still weird!!! but some of them are correct).
+>>and then draw those polygons out, with correct arcs & lines. 
+>>>using more correct pi is the key.
 
  
 
