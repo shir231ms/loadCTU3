@@ -211,7 +211,7 @@ int circleLineCollision(Point2D from, Point2D to, double radius, Point2D& inters
     }
 }
 
-bool intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Point2D c, vector<Point2D*>& vecPt)
+void intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Point2D c, vector<Point2D*>& vecPt)
 {
     //a:arc, b:line
     //at last true intersection points
@@ -245,7 +245,6 @@ bool intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Po
                     interPt1=interPt1+key;
                     vecPt.push_back(&interPt1);
                     outfile<<interPt1.x<<" "<<interPt1.y<<endl;
-                    return true;
                 }
             }
             else {
@@ -253,7 +252,6 @@ bool intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Po
                     interPt1=interPt1+key;
                     vecPt.push_back(&interPt1);
                     outfile<<interPt1.x<<" "<<interPt1.y<<endl;
-                    return true;
                 }
             }
         }
@@ -262,10 +260,9 @@ bool intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Po
                 interPt1=interPt1+key;
                 vecPt.push_back(&interPt1);
                 outfile<<interPt1.x<<" "<<interPt1.y<<endl;
-                return true;
             }
         }
-        return false;
+        return;
     case 2:
         if(interPt1.y/r > 1) int1=1;
         else if(interPt1.y/r < -1) int1=-1;
@@ -283,7 +280,6 @@ bool intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Po
                     vecPt.push_back(&interPt1);
                     outfile<<interPt1.x<<" "<<interPt1.y<<endl;
                 }
-                else return false;
             }
             else {
                 if(int1_arc>=-a1_arc && int1_arc<=a2_arc){
@@ -291,14 +287,12 @@ bool intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Po
                     vecPt.push_back(&interPt1);
                     outfile<<interPt1.x<<" "<<interPt1.y<<endl;
                 }
-                else return false;
             }
             if(int2_arc>=a1_arc){
                 if(int2_arc>=a1_arc && -int2_arc<=a2_arc){
                     interPt2=interPt2+key;
                     vecPt.push_back(&interPt2);
                     outfile<<interPt2.x<<" "<<interPt2.y<<endl;
-                    return true;
                 }
             }
             else {
@@ -306,23 +300,23 @@ bool intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Po
                     interPt2=interPt2+key;
                     vecPt.push_back(&interPt2);
                     outfile<<interPt2.x<<" "<<interPt2.y<<endl;
-                    return true;
                 }
             }
         }
         else{
-            if(int1_arc>=a1_arc && int1_arc<=a2_arc && int1_arc>=a1_arc && int1_arc<=a2_arc){
+            if(int1_arc>=a1_arc && int1_arc<=a2_arc){
                 interPt1=interPt1+key;
-                interPt2=interPt2+key;
                 vecPt.push_back(&interPt1);
-                vecPt.push_back(&interPt2);
                 outfile<<interPt1.x<<" "<<interPt1.y<<endl;
+            }
+            if(int2_arc>=a1_arc && int2_arc<=a2_arc){
+                interPt2=interPt2+key;
+                vecPt.push_back(&interPt2);
                 outfile<<interPt2.x<<" "<<interPt2.y<<endl;
-                return true;
             }
         }
-        return false;
+        return;
     default:
-        return false;
+        return;
     }
 }
