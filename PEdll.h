@@ -1,7 +1,10 @@
 //An example of a simple double linked list using OOP techniques
 #include <iostream>
 #include <iomanip>
+#include <fstream>
+#include <cmath>       /* acos */
 using namespace std;
+ofstream output("data.txt");
 struct PEnode
 {
     double x;
@@ -54,19 +57,84 @@ inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
   void PE_cirLinkedList::dispNodesForward()
   {
       PEnode *temp = firstNode;
-      cout<<fixed<< setprecision(7);
-      cout << "\n\nDetails in forward order:" << endl;
+      //cout<<fixed<< setprecision(7);
+      output<<fixed<< setprecision(7);
+      //cout << "\n\nDetails in forward order:" << endl;
       int cnt=0;
-      do{
+      double v1,v2,inteval=3.14159265359/36;
+      //cout<<"next poly"<<endl;
+      do{/*//cout
          cout <<"("<<cnt+1<< ") Vertex(" <<temp->x << "," <<temp->y << "),\n";
          if (temp->segment==0){
              cout<<"    Arc, Center(" << temp->center_x << "," << temp->center_y << "), Dir:" << int(temp->dir) << ", Radius:" << temp->radius << ".\n" ;
-             temp = temp->N;
+
          }
          else{
              cout<<"    Line.\n";
-             temp = temp->N;
+
+         }*/
+         //output<<"start("<<temp->x<<","<<temp->y<<")"<<endl;
+         //draw
+         if (temp->segment==1){
+            //output<<"//////////////"<<endl;
+            output<<temp->x<<" "<<temp->N->x<<" "<<temp->y<<" "<<temp->N->y<<endl;
          }
+         else{
+            double tem,a;
+            //output<<"............."<<endl;
+            if((temp->y-temp->center_y)/temp->radius > 1)
+                v1=1;
+            else if((temp->y-temp->center_y)/temp->radius < -1)
+                v1=-1;
+            else v1=(temp->y-temp->center_y)/temp->radius;
+            if((temp->N->y-temp->center_y)/temp->radius > 1)
+                v2=1;
+            else if((temp->N->y-temp->center_y)/temp->radius < -1)
+                v2=-1;
+            else v2=(temp->N->y-temp->center_y)/temp->radius;
+            if(cnt!=0) a=tem;//gain arc value
+            else a=asin(v1);
+
+            //cout<<"...";
+            //cout<<"["<<asin(v2)<<","<<asin(v1)<<"]"<<endl;
+            //cout<<abs(asin(v2)-asin(v1))/inteval<<endl;
+            if (temp->dir==0){//CW
+                a=a-inteval;//3' a line
+                double x1=temp->x,x2;
+                double y1=temp->y,y2;
+                for(int i=1;i<abs(asin(v2)-asin(v1))/inteval;++i){//cout<<a<<endl;
+                    x2=temp->center_x+temp->radius*(cos(a));
+                    y2=temp->center_y+temp->radius*(sin(a));
+                    //cout<<a<<endl;
+                    output<<x1<<" "<<x2<<" "<<y1<<" "<<y2<<endl;
+                    x1=x2; y1=y2;
+                    a=a-inteval;//3' a line
+                }
+                tem=a;
+                x2=temp->N->x;
+                y2=temp->N->y;
+                output<<x1<<" "<<x2<<" "<<y1<<" "<<y2<<endl;
+            }
+            else{//CCW
+                double x1=temp->x,x2;
+                double y1=temp->y,y2;
+                a=a+inteval;//3' a line
+                for(int i=1;i<abs(asin(v2)-asin(v1))/inteval;++i){
+                    x2=temp->center_x+temp->radius*(cos(a));
+                    y2=temp->center_y+temp->radius*(sin(a));
+                    //cout<<a<<endl;
+                    output<<x1<<" "<<x2<<" "<<y1<<" "<<y2<<endl;
+                    x1=x2; y1=y2;
+                    a=a+inteval;//3' a line
+                }
+                tem=a;
+                x2=temp->N->x;
+                y2=temp->N->y;
+                output<<x1<<" "<<x2<<" "<<y1<<" "<<y2<<endl;
+            }
+
+         }
+         temp = temp->N;
          ++cnt;
       }
       while(temp != firstNode/*temp != firstNode->N || cnt==1*/);
@@ -76,23 +144,23 @@ void PE_cirLinkedList::dispNodesReverse()
   {
       PEnode *temp = endNode;
       cout<<fixed<< setprecision(7);
-      cout << "\n\nDetails in reverse order:" << endl;
+      //output<<fixed<< setprecision(7);
+      //cout << "\n\nDetails in reverse order:" << endl;
       int cnt=0;
       do{
          cout <<"("<<cnt+1<< ") Vertex(" <<temp->x << "," <<temp->y << "),\n";
          if (temp->segment==0){
              cout<<"    Arc, Center(" << temp->center_x << "," << temp->center_y << "), Dir:" << int(temp->dir) << ", Radius:" << temp->radius << ".\n" ;
-             temp = temp->P;
          }
          else{
              cout<<"    Line.\n";
-             temp = temp->P;
-         }
+         }/*
+         output<<temp->x<<" "<<temp->y<<endl;*/
+         temp = temp->P;
          ++cnt;
       }
       while(temp != endNode/*temp != endNode->P || cnt==1*/);
   }
-
 
 void PE_cirLinkedList::destroyList()
 {
