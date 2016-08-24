@@ -207,7 +207,16 @@ int circleLineCollision(Point2D from, Point2D to, double radius, Point2D& inters
 
         if (!one && !two)
             return 0;
-        return 2;
+        else if(one && two)
+            return 2;
+        else if (one)
+            return 1;
+        else if (two){
+            intersectPt1=intersectPt2;
+            return 1;
+        }
+
+
     }
 }
 

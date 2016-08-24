@@ -45,6 +45,7 @@ string getWord(ifstream& in)
 int main(int argc, char *argv[])
 {
     ifstream file(argv[1]);//開啟input檔案
+    ofstream outline("intersect.txt");
     if(!file){     //檢查檔案是否成功開啟
         cout << "Can't open file!\n";
     }
@@ -140,7 +141,7 @@ int main(int argc, char *argv[])
         vector<PEnode*> seg_pool;
         vector<Point2D*> intersectionPt;
         outfile<<fixed<< setprecision(7);
-        ofstream outline("intersect.txt");
+
 
         seg_pool.reserve(1000);
         intersectionPt.reserve(1000);
@@ -187,8 +188,8 @@ int main(int argc, char *argv[])
                             break;
                         }
                         //haven't been in seg_pool
-                        if(seg_pool[i]->id!=new_seg[j]->id){
-                            for(int i=0;i<seg_pool.size();i++){
+                        for(int i=0;i<seg_pool.size();i++){
+                            if(seg_pool[i]->id!=new_seg[j]->id){
                                 if(seg_pool[i]->segment==true){//line
                                     Point2D a1(seg_pool[i]->x,seg_pool[i]->y);
                                     Point2D a2(seg_pool[i]->N->x,seg_pool[i]->N->y);
