@@ -18,6 +18,10 @@ ItriInturn_FirstTask
 >add "loadCTU3.m" for reading the output file, "data.txt", of "main.cpp", 
 >and then draw those polygons out (only lines, no arcs).
 
+**Vector2D.h**
+>compute the intersecting points between arc-line & line-line
+>output "intersect.txt"(line-line,blue points) & "intersect_c.txt"(arc-line,red points) for drawing out.
+
  
 
 
