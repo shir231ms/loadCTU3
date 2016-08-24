@@ -241,14 +241,12 @@ void intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Po
 
         if(a2_arc<a1_arc){
             if(int1_arc>=a1_arc){
-                if(int1_arc>=a1_arc && -int1_arc<=a2_arc){
-                    interPt1=interPt1+key;
-                    vecPt.push_back(&interPt1);
-                    outfile<<interPt1.x<<" "<<interPt1.y<<endl;
-                }
+                interPt1=interPt1+key;
+                vecPt.push_back(&interPt1);
+                outfile<<interPt1.x<<" "<<interPt1.y<<endl;
             }
             else {
-                if(int1_arc>=-a1_arc && int1_arc<=a2_arc){
+                if(int1_arc<=a2_arc){
                     interPt1=interPt1+key;
                     vecPt.push_back(&interPt1);
                     outfile<<interPt1.x<<" "<<interPt1.y<<endl;
@@ -274,29 +272,25 @@ void intersect(Point2D a1, Point2D a2, Point2D b1, Point2D b2, long double r, Po
         int2_arc=asin(int2);
 
         if(a2_arc<a1_arc){
-            if(int1_arc>=a1_arc){
-                if(int1_arc>=a1_arc && -int1_arc<=a2_arc){
-                    interPt1=interPt1+key;
-                    vecPt.push_back(&interPt1);
-                    outfile<<interPt1.x<<" "<<interPt1.y<<endl;
-                }
+            if(int1_arc>=a1_arc){//inter1 in the fourth area
+                interPt1=interPt1+key;
+                vecPt.push_back(&interPt1);
+                outfile<<interPt1.x<<" "<<interPt1.y<<endl;
             }
             else {
-                if(int1_arc>=-a1_arc && int1_arc<=a2_arc){
+                if(int1_arc<=a2_arc){
                     interPt1=interPt1+key;
                     vecPt.push_back(&interPt1);
                     outfile<<interPt1.x<<" "<<interPt1.y<<endl;
                 }
             }
             if(int2_arc>=a1_arc){
-                if(int2_arc>=a1_arc && -int2_arc<=a2_arc){
-                    interPt2=interPt2+key;
-                    vecPt.push_back(&interPt2);
-                    outfile<<interPt2.x<<" "<<interPt2.y<<endl;
-                }
+                interPt2=interPt2+key;
+                vecPt.push_back(&interPt2);
+                outfile<<interPt2.x<<" "<<interPt2.y<<endl;
             }
             else {
-                if(int2_arc>=-a1_arc && int2_arc<=a2_arc){
+                if(int2_arc<=a2_arc){
                     interPt2=interPt2+key;
                     vecPt.push_back(&interPt2);
                     outfile<<interPt2.x<<" "<<interPt2.y<<endl;

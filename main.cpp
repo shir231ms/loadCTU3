@@ -7,7 +7,7 @@
 struct PolyNode
 {
     string command;//"Draw/Flash"
-    int id;
+    int id;//from input file
     string str;//"dark/clear"
     string type; //"[0]/[1]/[2]"
     PE_cirLinkedList *PELL;
@@ -65,6 +65,7 @@ int main(int argc, char *argv[])
             PolyNode *p=new PolyNode;
             PE_cirLinkedList *PEList = new PE_cirLinkedList();
 
+            p->id=polygon_cnt;
             p->command = word;//command
             p->id = atoi(&(getWord(file))[0u]);//id
             p->str = getWord(file);//"dark/clear"
@@ -86,7 +87,7 @@ int main(int argc, char *argv[])
                         c=1;
                     }
                     r=atof(&(getWord(file))[0u]);
-                    t=PEList->appendNodeBack(x,y,0,cx,cy,c,r);
+                    t=PEList->appendNodeBack(polygon_cnt,x,y,0,cx,cy,c,r);
                     XList->InsertNodeInc(x,y,t);
                     YList->InsertNodeDec(y,x,t);
                     x=atof(&(getWord(file))[0u]);
@@ -94,7 +95,7 @@ int main(int argc, char *argv[])
                     word = getWord(file);
                     continue;
                 case 'l'://line
-                    t=PEList->appendNodeBack(x,y,1,(double)0.0,(double)0.0,0,(double)0.0);
+                    t=PEList->appendNodeBack(polygon_cnt,x,y,1,(double)0.0,(double)0.0,0,(double)0.0);
                     XList->InsertNodeInc(x,y,t);
                     YList->InsertNodeDec(y,x,t);
                     x=atof(&(getWord(file))[0u]);
@@ -160,9 +161,11 @@ int main(int argc, char *argv[])
                         //judge for seg_ment[0] whether in seg_pool
                         if((j==0)&&
                            (new_seg[0]->y > new_seg[1]->y)||
-                           ((new_seg[0]->y==new_seg[1]->y)&&(new_seg[0]->x<new_seg[1]->x))){
+                           ((new_seg[0]->y>=new_seg[1]->y-0.0001 && new_seg[0]->y<=new_seg[1]->y+0.0001)&&
+                           (new_seg[0]->x<new_seg[1]->x))){
                             for(int i=0;i<seg_pool.size();++i){
-                                if(seg_pool[i]==new_seg[0]){
+                                if((seg_pool[i]->x>=new_seg[0]->x-0.0001 && seg_pool[i]->x<=new_seg[0]->x+0.0001)&&
+                                   (seg_pool[i]->y>=new_seg[0]->y-0.0001 && seg_pool[i]->y<=new_seg[0]->y+0.0001)){
                                     seg_pool.erase(seg_pool.begin()+i);
                                     break;
                                 }
@@ -172,9 +175,11 @@ int main(int argc, char *argv[])
                         //judge for seg_ment[1] whether in seg_pool
                         if((j==1)&&
                            (new_seg[1]->N->y > new_seg[1]->y)||
-                           ((new_seg[1]->N->y==new_seg[1]->y)&&(new_seg[1]->N->x<new_seg[1]->x))){
+                           ((new_seg[1]->y>=new_seg[1]->y-0.0001 && new_seg[1]->y<=new_seg[1]->y+0.0001)&&
+                           (new_seg[1]->x<new_seg[1]->x))){
                             for(int i=0;i<seg_pool.size();++i){
-                                if(seg_pool[i]==new_seg[1]){
+                                if((seg_pool[i]->x>=new_seg[1]->x-0.0001 && seg_pool[i]->x<=new_seg[1]->x+0.0001)&&
+                                   (seg_pool[i]->y>=new_seg[1]->y-0.0001 && seg_pool[i]->y<=new_seg[1]->y+0.0001)){
                                     seg_pool.erase(seg_pool.begin()+i);
                                     break;
                                 }
@@ -182,32 +187,34 @@ int main(int argc, char *argv[])
                             break;
                         }
                         //haven't been in seg_pool
-                        for(int i=0;i<seg_pool.size();i++){
-                            if(seg_pool[i]->segment==true){//line
-                                Point2D a1(seg_pool[i]->x,seg_pool[i]->y);
-                                Point2D a2(seg_pool[i]->N->x,seg_pool[i]->N->y);
-                                Point2D b1(new_seg[j]->x,new_seg[j]->y);
-                                Point2D b2(new_seg[j]->N->x,new_seg[j]->N->y);
-                                if(new_seg[j]->segment==true){//line-line
-                                    Point2D* tm=new Point2D;
-                                    if(intersect(a1,a2,b1,b2,*tm)==true){
-                                        intersectionPt.push_back(tm);
-                                        outline<<tm->x<<" "<<tm->y<<endl;
+                        if(seg_pool[i]->id!=new_seg[j]->id){
+                            for(int i=0;i<seg_pool.size();i++){
+                                if(seg_pool[i]->segment==true){//line
+                                    Point2D a1(seg_pool[i]->x,seg_pool[i]->y);
+                                    Point2D a2(seg_pool[i]->N->x,seg_pool[i]->N->y);
+                                    Point2D b1(new_seg[j]->x,new_seg[j]->y);
+                                    Point2D b2(new_seg[j]->N->x,new_seg[j]->N->y);
+                                    if(new_seg[j]->segment==true){//line-line
+                                        Point2D* tm=new Point2D;
+                                        if(intersect(a1,a2,b1,b2,*tm)==true){
+                                            intersectionPt.push_back(tm);
+                                            outline<<tm->x<<" "<<tm->y<<endl;
+                                        }
+                                    }
+                                    else{//line-arc
+                                        Point2D center(new_seg[j]->center_x,new_seg[j]->center_y);
+                                        intersect(b1,b2,a1,a2,new_seg[j]->radius,center,intersectionPt);
                                     }
                                 }
-                                else{//line-arc
-                                    Point2D center(new_seg[j]->center_x,new_seg[j]->center_y);
-                                    intersect(b1,b2,a1,a2,new_seg[j]->radius,center,intersectionPt);
-                                }
-                            }
-                            else{//arc
-                                Point2D a1(seg_pool[i]->x,seg_pool[i]->y);
-                                Point2D a2(seg_pool[i]->N->x,seg_pool[i]->N->y);
-                                Point2D center(seg_pool[i]->center_x,seg_pool[i]->center_y);
-                                Point2D c1(new_seg[j]->x,new_seg[j]->y);
-                                Point2D c2(new_seg[j]->N->x,new_seg[j]->N->y);
-                                if(new_seg[j]->segment==true){//arc-line
-                                    intersect(a1,a2,c1,c2,seg_pool[i]->radius,center,intersectionPt);
+                                else{//arc
+                                    Point2D a1(seg_pool[i]->x,seg_pool[i]->y);
+                                    Point2D a2(seg_pool[i]->N->x,seg_pool[i]->N->y);
+                                    Point2D center(seg_pool[i]->center_x,seg_pool[i]->center_y);
+                                    Point2D c1(new_seg[j]->x,new_seg[j]->y);
+                                    Point2D c2(new_seg[j]->N->x,new_seg[j]->N->y);
+                                    if(new_seg[j]->segment==true){//arc-line
+                                        intersect(a1,a2,c1,c2,seg_pool[i]->radius,center,intersectionPt);
+                                    }
                                 }
                             }
                         }
@@ -233,6 +240,7 @@ int main(int argc, char *argv[])
             moveY=moveY->N;
         }
     }
-
+    outline.close();
+    outfile.close();
     file.close();
 }

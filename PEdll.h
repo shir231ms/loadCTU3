@@ -7,6 +7,7 @@ using namespace std;
 ofstream output("data.txt");
 struct PEnode
 {
+    int id;//save which polygon's vertex
     double x;
     double y;
     bool segment;
@@ -15,17 +16,17 @@ struct PEnode
     bool dir;
     long double radius;
     PEnode *N,*P,*hz,*vt;
-    PEnode(double, double, bool, double, double, bool, double);
+    PEnode(int, double, double, bool, double, double, bool, double);
 };
-inline PEnode::PEnode(double xx, double yy, bool s, double vx, double vy, bool c, double r):
-            x(xx), y(yy), segment(s), center_x(vx), center_y(vy), dir(c), radius(r), N(this), P(this),hz(NULL),vt(NULL){}
+inline PEnode::PEnode(int n, double xx, double yy, bool s, double vx, double vy, bool c, double r):
+            id(n), x(xx), y(yy), segment(s), center_x(vx), center_y(vy), dir(c), radius(r), N(this), P(this),hz(NULL),vt(NULL){}
 
 class PE_cirLinkedList
 {
   public:
       PE_cirLinkedList();
       ~PE_cirLinkedList();
-      PEnode* appendNodeBack(double, double, bool, double, double, bool, double);
+      PEnode* appendNodeBack(int, double, double, bool, double, double, bool, double);
       void dispNodesForward();
       void dispNodesReverse();
       void destroyList();
@@ -35,9 +36,9 @@ class PE_cirLinkedList
 inline PE_cirLinkedList::PE_cirLinkedList():firstNode(NULL),endNode(NULL){}
 inline PE_cirLinkedList::~PE_cirLinkedList(){ destroyList();}
 
-  PEnode* PE_cirLinkedList::appendNodeBack(double xx, double yy, bool s, double x, double y, bool c, double r)
+  PEnode* PE_cirLinkedList::appendNodeBack(int num, double xx, double yy, bool s, double x, double y, bool c, double r)
   {
-        PEnode *n = new PEnode(xx,yy,s,x,y,c,r);
+        PEnode *n = new PEnode(num,xx,yy,s,x,y,c,r);
         if( endNode == NULL)
         {
             firstNode = n;
