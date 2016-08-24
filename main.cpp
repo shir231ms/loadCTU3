@@ -139,6 +139,7 @@ int main(int argc, char *argv[])
         vector<PEnode*> seg_pool;
         vector<Point2D*> intersectionPt;
         outfile<<fixed<< setprecision(7);
+        ofstream outline("intersect.txt");
 
         seg_pool.reserve(1000);
         intersectionPt.reserve(1000);
@@ -191,18 +192,18 @@ int main(int argc, char *argv[])
                                     Point2D* tm=new Point2D;
                                     if(intersect(a1,a2,b1,b2,*tm)==true){
                                         intersectionPt.push_back(tm);
-                                        outfile<<tm->x<<" "<<tm->y<<endl;
+                                        outline<<tm->x<<" "<<tm->y<<endl;
                                     }
                                 }
                                 else{//line-arc
-                                    Point2D center(new_seg[j]->x,new_seg[j]->y);
+                                    Point2D center(new_seg[j]->center_x,new_seg[j]->center_y);
                                     intersect(b1,b2,a1,a2,new_seg[j]->radius,center,intersectionPt);
                                 }
                             }
                             else{//arc
                                 Point2D a1(seg_pool[i]->x,seg_pool[i]->y);
                                 Point2D a2(seg_pool[i]->N->x,seg_pool[i]->N->y);
-                                Point2D center(seg_pool[i]->x,seg_pool[i]->y);
+                                Point2D center(seg_pool[i]->center_x,seg_pool[i]->center_y);
                                 Point2D c1(new_seg[j]->x,new_seg[j]->y);
                                 Point2D c2(new_seg[j]->N->x,new_seg[j]->N->y);
                                 if(new_seg[j]->segment==true){//arc-line

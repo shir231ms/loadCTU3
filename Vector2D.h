@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 using namespace std;
-ofstream outfile("intersect.txt");
+ofstream outfile("intersect_c.txt");
 class Vector2D {
 public:
     double x, y;
@@ -158,7 +158,7 @@ int circleLineCollision(Point2D from, Point2D to, double radius, Point2D& inters
 {
     Vector2D lFrom, lTo, lLine;
     Vector2D line, normal;
-    double a, b, c, disc, sqrt_disc, u, v, nn, vn;
+    double a, b, c, disc, sqrt_disc, u, v;
     bool one = false, two = false;
 
     // set line vectors
